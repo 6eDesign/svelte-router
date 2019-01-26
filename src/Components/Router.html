@@ -1,0 +1,44 @@
+<script context="module">
+	export const ROUTER = { }; 
+</script>
+
+<script>
+	import { setContext, onMount } from 'svelte';
+	import { writable, derive } from 'svelte/store';
+	import determineRoute from '../lib/determineRoute';
+	
+	let routes = writable(null);
+	let path = writable(null);
+	let selectedRoute = derive([routes, path], ([routes, path]) => { 
+		if(!path || !routes) return null;
+		let route = determineRoute(routes,path);
+		return route;
+	}); 
+
+	const locationChange = () => { 
+		path.set(location.pathname); 
+	}; 
+	
+	setContext(ROUTER, { 
+		registerRoute(conf) { 
+			routes.update(routes => { 
+				routes = routes || [];
+				routes.push(conf);
+				return routes;
+			});
+		}, 
+		unregisterRoute(conf) { 
+			
+		},
+		selectedRoute
+	});
+
+	onMount(locationChange);
+	
+</script>
+
+<svelte:window 
+	on:hashchange={locationChange} 
+	on:popstate={locationChange} 
+/>
+<slot></slot>

@@ -1,0 +1,29 @@
+{
+  "name": "svelte-router",
+  "svelte": "src/Components/Router.html",
+  "version": "0.0.1",
+  "devDependencies": {
+    "npm-run-all": "^4.1.3",
+    "rollup": "^0.66.2",
+    "rollup-plugin-browsersync": "^0.2.6",
+    "rollup-plugin-buble": "^0.19.4",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-svelte": "^5.0.0",
+    "rollup-plugin-terser": "^3.0.0",
+    "sirv-cli": "^0.2.2",
+    "standard-version": "^4.4.0",
+    "svelte": "^3.0.0-alpha19",
+    "svelte-transitions": "^1.2.0",
+    "timeUtils": "^1.1.4"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "autobuild": "rollup -c -w",
+    "dev": "run-p start:dev autobuild",
+    "start": "sirv public",
+    "start:dev": "sirv public --dev",
+    "release": "npm run build && standard-version"
+  },
+  "dependencies": {}
+}

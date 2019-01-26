@@ -1,0 +1,36 @@
+<script>
+	import { getContext, onDestroy } from 'svelte';
+	import { ROUTER } from './Router.html';
+
+	export let path; 
+	export let component;
+
+	let ComponentPromise; 
+
+	const route = { path, component };
+
+	const { registerRoute, unregisterRoute, selectedRoute } = getContext(ROUTER);
+	
+	registerRoute(route);
+
+	selectedRoute.subscribe(val => {
+		if(val && val.route == route) {
+			console.log(`Dynamically importing route "${route.path}"`);
+			ComponentPromise = component().then(({default: comp}) => {
+				return comp;
+			}); 
+		}
+	});
+	
+</script>
+
+{#if $selectedRoute && $selectedRoute.route == route}
+	{#await ComponentPromise}
+		<slot>
+			<p>Loading... {JSON.stringify($selectedRoute,null,2)}</p>
+		</slot>
+	{:then something}
+		Loaded! {Component}
+		<!-- <Component params={$selectedRoute.params} /> -->
+	{/await}
+{/if}
