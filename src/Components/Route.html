@@ -3,11 +3,11 @@
 	import { ROUTER } from './Router.html';
 
 	export let path; 
-	export let component;
+	export let componentImport;
 
 	let ComponentPromise; 
 
-	const route = { path, component };
+	const route = { path, componentImport };
 
 	const { registerRoute, unregisterRoute, selectedRoute } = getContext(ROUTER);
 	
@@ -16,7 +16,8 @@
 	selectedRoute.subscribe(val => {
 		if(val && val.route == route) {
 			console.log(`Dynamically importing route "${route.path}"`);
-			ComponentPromise = component().then(({default: comp}) => {
+			ComponentPromise = componentImport().then(({default: comp}) => {
+				console.log(comp);
 				return comp;
 			}); 
 		}
