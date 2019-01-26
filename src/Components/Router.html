@@ -15,7 +15,8 @@
 		return route;
 	}); 
 
-	const locationChange = () => { 
+	const locationChange = (evt) => { 
+		if(evt) evt.preventDefault(); 
 		path.set(location.pathname); 
 	}; 
 	
@@ -33,8 +34,9 @@
 	
 </script>
 
+<!-- todo.. figure this bit out -->
 <svelte:window 
 	on:hashchange={locationChange} 
-	on:popstate={locationChange} 
+	on:onpopstate={locationChange} 
 />
 <slot></slot>

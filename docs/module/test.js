@@ -1,2 +1,701 @@
-import{a as run_all,b as noop,c as SvelteComponentDev,d as addListener,e as create_slot,f as init,g as safe_not_equal,h as setContext,i as onMount,j as addLoc,k as add_binding_callback,l as append,m as assign,n as createComment,o as createElement,p as createText,q as detachNode,r as flush,s as handlePromise,t as insert,u as setData,v as validate_store,w as getContext,x as mount_component}from"./chunk-8c712974.js";function assign$1(t,e){var n=arguments;if(null==t)throw new TypeError("Cannot convert first argument to object");for(var o=Object(t),r=1;r<arguments.length;r++){var c=n[r];if(null!=c)for(var a=Object.keys(Object(c)),i=0,u=a.length;i<u;i++){var s=a[i],p=Object.getOwnPropertyDescriptor(c,s);void 0!==p&&p.enumerable&&(o[s]=c[s])}}return o}function polyfill(){Object.assign||Object.defineProperty(Object,"assign",{enumerable:!1,configurable:!0,writable:!0,value:assign$1})}var es6ObjectAssign={assign:assign$1,polyfill:polyfill},es6ObjectAssign_2=es6ObjectAssign.polyfill;function readable(t,e){var n,o=[];function r(t){t!==e&&(e=t,o.forEach(function(t){return t[1]()}),o.forEach(function(t){return t[0](e)}))}return{subscribe:function(c,a){void 0===a&&(a=noop),0===o.length&&(n=t(r));var i=[c,a];return o.push(i),c(e),function(){var t=o.indexOf(i);-1!==t&&o.splice(t,1),0===o.length&&(n&&n(),n=null)}}}}function writable(t){var e=[];function n(n){n!==t&&(t=n,e.forEach(function(t){return t[1]()}),e.forEach(function(e){return e[0](t)}))}return{set:n,update:function(e){n(e(t))},subscribe:function(n,o){void 0===o&&(o=noop);var r=[n,o];return e.push(r),n(t),function(){var t=e.indexOf(r);-1!==t&&e.splice(t,1)}}}}function derive(t,e){var n=!Array.isArray(t);n&&(t=[t]);var o=1===e.length,r={};return readable(function(c){var a=!1,i=[],u=0,s=function(){if(!u){var t=e(n?i[0]:i,c);o&&r!==(r=t)&&c(t)}},p=t.map(function(t,e){return t.subscribe(function(t){i[e]=t,u&=~(1<<e),a&&s()},function(){u|=1<<e})});return a=!0,s(),function(){run_all(p)}})}var isNamedParam=function(t){return t.length>2&&0==t.indexOf(":")},testString=function(t,e){var n={};if(-1==t.indexOf(":"))return t===e&&n;var o=e.substring(1).split("/"),r=t.substring(1).split("/");if(o.length!==r.length)return!1;for(var c=0;c<o.length;++c)if(isNamedParam(r[c]))n[r[c].substring(1)]=o[c];else if(o[c]!==r[c])return!1;return!0},matchRoute=function(t,e){switch(typeof t.path){case"string":return testString(t.path,e);case"function":return t.path(e);case"object":return t.path instanceof RegExp&&t.path.test(e);default:return!1}};function determineRoute(t,e){for(var n=0;n<t.length;++n){var o=matchRoute(t[n],e);if(o)return{route:t[n],params:o}}return null}function create_fragment(t){var e,n=create_slot(t.$$slot_default,t);return{c:function(){n&&n.c(),e=[addListener(window,"hashchange",t.locationChange),addListener(window,"popstate",t.locationChange)]},l:function(t){throw n&&n.l(t),new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option")},m:function(t,e){n&&n.m(t,e)},p:function(t,e){n&&t.$$scope&&n.p(e.$$scope.changed,e.$$scope.ctx)},i:noop,o:noop,d:function(t){n&&n.d(t),run_all(e)}}}var ROUTER={};function instance(t,e,n){var o=writable([]),r=writable(null),c=derive([o,r],function(t){var e=t[0],n=t[1];return n&&e?determineRoute(e,n):null}),a=function(){r.set(location.pathname)};setContext(ROUTER,{registerRoute:function(t){o.update(function(e){return e.push(t),e})},selectedRoute:c}),onMount(a);var i=e.$$slot_default,u=e.$$scope;return t.$set=function(t){"$$scope"in t&&n("$$scope",u=t.$$scope)},{locationChange:a,$$slot_default:i,$$scope:u}}var Router=function(t){function e(e){t.call(this,e),init(this,e,instance,create_fragment,safe_not_equal)}return t&&(e.__proto__=t),e.prototype=Object.create(t&&t.prototype),e.prototype.constructor=e,e}(SvelteComponentDev),file$1="src\\Components\\Route.html";function create_if_block(t){var e,n,o,r={ctx:t,current:null,pending:create_pending_block,then:create_then_block,catch:create_catch_block,value:"null",error:"null"};return handlePromise(e=t.ComponentPromise,r),{c:function(){r.block.c(),n=createText("\n\t"),o=createElement("div"),addLoc(o,file$1,37,1,873)},m:function(e,c){r.block.m(e,r.anchor=c),r.mount=function(){return n.parentNode},r.anchor=n,insert(e,n,c),insert(e,o,c),add_binding_callback(function(){return t.div_binding(o,null)})},p:function(n,c){t=c,r.ctx=t,"ComponentPromise"in n&&e!==(e=t.ComponentPromise)&&handlePromise(e,r)||r.block.p(n,assign(assign({},t),r.resolved)),n.items&&(t.div_binding(null,o),t.div_binding(o,null))},d:function(e){r.block.d(e),r=null,e&&(detachNode(n),detachNode(o)),t.div_binding(null,o)}}}function create_catch_block(t){return{c:noop,m:noop,p:noop,d:noop}}function create_then_block(t){return{c:noop,m:noop,p:noop,d:noop}}function create_pending_block(t){var e,n,o,r,c=JSON.stringify(t.$selectedRoute,null,2),a=create_slot(t.$$slot_default,t);return{c:function(){a||(e=createElement("p"),n=createText("Loading... "),o=createText(c)),a&&a.c(),r=createText("\n\t}\n\t\tError!"),a||addLoc(e,file$1,32,3,775)},l:function(t){a&&a.l(t)},m:function(t,c){a?a.m(t,c):(insert(t,e,c),append(e,n),append(e,o)),insert(t,r,c)},p:function(t,e){a||t.$selectedRoute&&c!==(c=JSON.stringify(e.$selectedRoute,null,2))&&setData(o,c),a&&t.$$scope&&a.p(e.$$scope.changed,e.$$scope.ctx)},d:function(t){a||t&&detachNode(e),a&&a.d(t),t&&detachNode(r)}}}function create_fragment$1(t){var e,n,o,r,c=JSON.stringify(t.$selectedRoute,null,2),a=t.$selectedRoute&&t.$selectedRoute.route==t.route&&create_if_block(t);return{c:function(){e=createText("Selected Route: "),n=createText(c),o=createText("\n\n"),a&&a.c(),r=createComment()},l:function(t){throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option")},m:function(t,c){insert(t,e,c),insert(t,n,c),insert(t,o,c),a&&a.m(t,c),insert(t,r,c)},p:function(t,e){t.$selectedRoute&&c!==(c=JSON.stringify(e.$selectedRoute,null,2))&&setData(n,c),e.$selectedRoute&&e.$selectedRoute.route==e.route?a?a.p(t,e):((a=create_if_block(e)).c(),a.m(r.parentNode,r)):a&&(a.d(1),a=null)},i:noop,o:noop,d:function(t){t&&(detachNode(e),detachNode(n),detachNode(o)),a&&a.d(t),t&&detachNode(r)}}}function instance$1(t,e,n){var o,r,c=e.path,a=e.componentImport,i={path:c,componentImport:a},u=getContext(ROUTER),s=u.registerRoute,p=(u.unregisterRoute,u.selectedRoute);s(i),p.subscribe(function(t){t&&t.route==i&&(console.log('Dynamically importing route "'+i.path+'"'),o=a().then(function(t){return new(0,t.default)({target:r})}),n("ComponentPromise",o))});var l,f=e.$$slot_default,d=e.$$scope;return validate_store(p,"selectedRoute"),t.$$.on_destroy.push(p.subscribe(function(t){n("$selectedRoute",l=t)})),t.$set=function(t){"path"in t&&n("path",c=t.path),"componentImport"in t&&n("componentImport",a=t.componentImport),"$$scope"in t&&n("$$scope",d=t.$$scope)},{path:c,componentImport:a,ComponentPromise:o,componentRef:r,route:i,div_binding:function(t,e){n("componentRef",r=t)},$selectedRoute:l,$$slot_default:f,$$scope:d}}var Route=function(t){function e(e){t.call(this,e),init(this,e,instance$1,create_fragment$1,safe_not_equal);var n=this.$$.ctx,o=e.props||{};void 0!==n.path||"path"in o||console.warn("<Route> was created without expected prop 'path'"),void 0!==n.componentImport||"componentImport"in o||console.warn("<Route> was created without expected prop 'componentImport'")}t&&(e.__proto__=t),e.prototype=Object.create(t&&t.prototype),e.prototype.constructor=e;var n={path:{configurable:!0},componentImport:{configurable:!0}};return n.path.get=function(){return this.$$.ctx.path},n.path.set=function(t){this.$set({path:t}),flush()},n.componentImport.get=function(){return this.$$.ctx.componentImport},n.componentImport.set=function(t){this.$set({componentImport:t}),flush()},Object.defineProperties(e.prototype,n),e}(SvelteComponentDev);function create_default_slot(t){var e,n=new Route({props:{path:"/",componentImport:func},$$inline:!0});return{c:function(){n.$$.fragment.c()},m:function(t,e){mount_component(n,t,e)},p:noop,i:function(){e||(n.$$.fragment.i(),e=!0)},o:function(){n&&n.$$.fragment.o(),e=!1},d:function(t){n.$destroy(t)}}}function create_fragment$2(t){var e,n=new Router({props:{$$slot_default:[create_default_slot],$$scope:{ctx:t}},$$inline:!0});return{c:function(){n.$$.fragment.c()},l:function(t){throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option")},m:function(t,e){mount_component(n,t,e)},p:noop,i:function(){e||(n.$$.fragment.i(),e=!0)},o:function(){n&&n.$$.fragment.o(),e=!1},d:function(t){n.$destroy(t)}}}function func(){return import("./Home.js")}var App=function(t){function e(e){t.call(this,e),init(this,e,null,create_fragment$2,safe_not_equal)}return t&&(e.__proto__=t),e.prototype=Object.create(t&&t.prototype),e.prototype.constructor=e,e}(SvelteComponentDev);es6ObjectAssign_2();var app=new App({target:document.body,data:{}});export default app;
-//# sourceMappingURL=test.js.map
+import { a as run_all, b as noop, c as SvelteComponentDev, d as addListener, e as create_slot, f as init, g as safe_not_equal, h as setContext, i as onMount, j as addLoc, k as add_binding_callback, l as append, m as assign, n as createComment, o as createElement, p as createText, q as detachNode, r as flush, s as handlePromise, t as insert, u as setData, v as validate_store, w as getContext, x as mount_component } from './chunk-0191df90.js';
+
+/**
+ * Code refactored from Mozilla Developer Network:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+ */
+
+function assign$1(target, firstSource) {
+  if (target === undefined || target === null) {
+    throw new TypeError('Cannot convert first argument to object');
+  }
+
+  var to = Object(target);
+  for (var i = 1; i < arguments.length; i++) {
+    var nextSource = arguments[i];
+    if (nextSource === undefined || nextSource === null) {
+      continue;
+    }
+
+    var keysArray = Object.keys(Object(nextSource));
+    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+      var nextKey = keysArray[nextIndex];
+      var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+      if (desc !== undefined && desc.enumerable) {
+        to[nextKey] = nextSource[nextKey];
+      }
+    }
+  }
+  return to;
+}
+
+function polyfill() {
+  if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: assign$1
+    });
+  }
+}
+
+var es6ObjectAssign = {
+  assign: assign$1,
+  polyfill: polyfill
+};
+var es6ObjectAssign_2 = es6ObjectAssign.polyfill;
+
+function readable(start, value) {
+	const subscribers = [];
+	let stop;
+
+	function set(newValue) {
+		if (newValue === value) return;
+		value = newValue;
+		subscribers.forEach(s => s[1]());
+		subscribers.forEach(s => s[0](value));
+	}
+
+	return {
+		subscribe(run, invalidate = noop) {
+			if (subscribers.length === 0) {
+				stop = start(set);
+			}
+
+			const subscriber = [run, invalidate];
+			subscribers.push(subscriber);
+			run(value);
+
+			return function() {
+				const index = subscribers.indexOf(subscriber);
+				if (index !== -1) subscribers.splice(index, 1);
+
+				if (subscribers.length === 0) {
+					stop && stop();
+					stop = null;
+				}
+			};
+		}
+	};
+}
+
+function writable(value) {
+	const subscribers = [];
+
+	function set(newValue) {
+		if (newValue === value) return;
+		value = newValue;
+		subscribers.forEach(s => s[1]());
+		subscribers.forEach(s => s[0](value));
+	}
+
+	function update(fn) {
+		set(fn(value));
+	}
+
+	function subscribe(run, invalidate = noop) {
+		const subscriber = [run, invalidate];
+		subscribers.push(subscriber);
+		run(value);
+
+		return () => {
+			const index = subscribers.indexOf(subscriber);
+			if (index !== -1) subscribers.splice(index, 1);
+		};
+	}
+
+	return { set, update, subscribe };
+}
+
+function derive(stores, fn) {
+	const single = !Array.isArray(stores);
+	if (single) stores = [stores];
+
+	const auto = fn.length === 1;
+	let value = {};
+
+	return readable(set => {
+		let inited = false;
+		const values = [];
+
+		let pending = 0;
+
+		const sync = () => {
+			if (pending) return;
+			const result = fn(single ? values[0] : values, set);
+			if (auto && (value !== (value = result))) set(result);
+		};
+
+		const unsubscribers = stores.map((store, i) => store.subscribe(
+			value => {
+				values[i] = value;
+				pending &= ~(1 << i);
+				if (inited) sync();
+			},
+			() => {
+				pending |= (1 << i);
+			})
+		);
+
+		inited = true;
+		sync();
+
+		return function stop() {
+			run_all(unsubscribers);
+		};
+	});
+}
+
+const isNamedParam = str => str.length > 2 && str.indexOf(':') == 0; 
+
+const testString = (routeString, path) => { 
+  let params = { }; 
+  if(routeString.indexOf(':') == -1) { 
+    return routeString === path ? params : false;
+  }
+  const pathParts = path.substring(1).split('/'); 
+  const routeParts = routeString.substring(1).split('/');
+  if(pathParts.length !== routeParts.length) return false;
+  for (var i = 0; i < pathParts.length; ++i) { 
+    if(isNamedParam(routeParts[i])) { 
+      params[routeParts[i].substring(1)] = pathParts[i]; 
+      continue; 
+    }
+    if(pathParts[i] !== routeParts[i]) return false;
+  }
+  return true;
+};
+
+const matchRoute = (route, path) => { 
+  switch(typeof route.path) { 
+    case 'string': 
+      return testString(route.path, path); 
+    case 'function': 
+      return route.path(path);
+    case 'object': 
+      if(!(route.path instanceof RegExp)) return false;
+      return route.path.test(path);
+      break;
+    default: 
+      return false;
+  }
+};
+
+function determineRoute(routes, path) { 
+  for(var i=0; i < routes.length; ++i) { 
+    let params = matchRoute(routes[i], path); 
+    if(params) { 
+      return { route: routes[i], params }; 
+    }
+  }
+  return null;
+}
+
+/* src\Components\Router.html generated by Svelte v3.0.0-alpha19 */
+
+function create_fragment(ctx) {
+	var dispose;
+
+	const default_slot = create_slot(ctx.$$slot_default, ctx);
+
+	return {
+		c: function create() {
+
+			if (default_slot) default_slot.c();
+
+			dispose = [
+				addListener(window, "hashchange", ctx.locationChange),
+				addListener(window, "onpopstate", ctx.locationChange)
+			];
+		},
+
+		l: function claim(nodes) {
+			if (default_slot) default_slot.l(nodes);
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+
+		m: function mount(target, anchor) {
+
+			if (default_slot) {
+				default_slot.m(target, anchor);
+			}
+		},
+
+		p: function update(changed, ctx) {
+
+			if (default_slot && changed.$$scope) default_slot.p(ctx.$$scope.changed, ctx.$$scope.ctx);
+		},
+
+		i: noop,
+		o: noop,
+
+		d: function destroy(detach) {
+
+			if (default_slot) default_slot.d(detach);
+			run_all(dispose);
+		}
+	};
+}
+
+const ROUTER = { };
+
+function instance($$self, $$props, $$invalidate) {
+	
+	
+	let routes = writable([]);
+	let path = writable(null);
+	let selectedRoute = derive([routes, path], ([routes, path]) => { 
+		if(!path || !routes) return null;
+		let route = determineRoute(routes,path);
+		return route;
+	}); 
+
+	const locationChange = (evt) => { 
+		if(evt) evt.preventDefault(); 
+		path.set(location.pathname); 
+	}; 
+	
+	setContext(ROUTER, { 
+		registerRoute(conf) { 
+			routes.update(current => { 
+				current.push(conf);
+				return current;
+			});
+		}, 
+		selectedRoute
+	});
+
+	onMount(locationChange);
+
+	let { $$slot_default, $$scope } = $$props;
+
+	$$self.$set = $$props => {
+		if ('$$scope' in $$props) $$invalidate('$$scope', $$scope = $$props.$$scope);
+	};
+
+	return { locationChange, $$slot_default, $$scope };
+}
+
+class Router extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance, create_fragment, safe_not_equal);
+	}
+}
+
+/* src\Components\Route.html generated by Svelte v3.0.0-alpha19 */
+
+const file$1 = "src\\Components\\Route.html";
+
+// (30:0) {#if $selectedRoute && $selectedRoute.route == route}
+function create_if_block(ctx) {
+	var promise, text, div;
+
+	let info = {
+		ctx,
+		current: null,
+		pending: create_pending_block,
+		then: create_then_block,
+		catch: create_catch_block,
+		value: 'null',
+		error: 'null'
+	};
+
+	handlePromise(promise = ctx.ComponentPromise, info);
+
+	return {
+		c: function create() {
+			info.block.c();
+
+			text = createText("\n\t");
+			div = createElement("div");
+			addLoc(div, file$1, 37, 1, 882);
+		},
+
+		m: function mount(target, anchor) {
+			info.block.m(target, info.anchor = anchor);
+			info.mount = () => text.parentNode;
+			info.anchor = text;
+
+			insert(target, text, anchor);
+			insert(target, div, anchor);
+			add_binding_callback(() => ctx.div_binding(div, null));
+		},
+
+		p: function update(changed, new_ctx) {
+			ctx = new_ctx;
+			info.ctx = ctx;
+
+			if (('ComponentPromise' in changed) && promise !== (promise = ctx.ComponentPromise) && handlePromise(promise, info)) ; else {
+				info.block.p(changed, assign(assign({}, ctx), info.resolved));
+			}
+
+			if (changed.items) {
+				ctx.div_binding(null, div);
+				ctx.div_binding(div, null);
+			}
+		},
+
+		d: function destroy(detach) {
+			info.block.d(detach);
+			info = null;
+
+			if (detach) {
+				detachNode(text);
+				detachNode(div);
+			}
+
+			ctx.div_binding(null, div);
+		}
+	};
+}
+
+// (1:0) <script>  import { getContext, onDestroy }
+function create_catch_block(ctx) {
+	return {
+		c: noop,
+		m: noop,
+		p: noop,
+		d: noop
+	};
+}
+
+// (1:0) <script>  import { getContext, onDestroy }
+function create_then_block(ctx) {
+	return {
+		c: noop,
+		m: noop,
+		p: noop,
+		d: noop
+	};
+}
+
+// (31:26)    <slot>    <p>Loading... {JSON.stringify($selectedRoute,null,2)}
+function create_pending_block(ctx) {
+	var p, text0, text1_value = JSON.stringify(ctx.$selectedRoute,null,2), text1, text2;
+
+	const default_slot = create_slot(ctx.$$slot_default, ctx);
+
+	return {
+		c: function create() {
+			if (!default_slot) {
+				p = createElement("p");
+				text0 = createText("Loading... ");
+				text1 = createText(text1_value);
+			}
+
+			if (default_slot) default_slot.c();
+			text2 = createText("\n\t}\n\t\tError!");
+			if (!default_slot) {
+				addLoc(p, file$1, 32, 3, 784);
+			}
+		},
+
+		l: function claim(nodes) {
+			if (default_slot) default_slot.l(nodes);
+		},
+
+		m: function mount(target, anchor) {
+			if (!default_slot) {
+				insert(target, p, anchor);
+				append(p, text0);
+				append(p, text1);
+			}
+
+			else {
+				default_slot.m(target, anchor);
+			}
+
+			insert(target, text2, anchor);
+		},
+
+		p: function update(changed, ctx) {
+			if (!default_slot) {
+				if ((changed.$selectedRoute) && text1_value !== (text1_value = JSON.stringify(ctx.$selectedRoute,null,2))) {
+					setData(text1, text1_value);
+				}
+			}
+
+			if (default_slot && changed.$$scope) default_slot.p(ctx.$$scope.changed, ctx.$$scope.ctx);
+		},
+
+		d: function destroy(detach) {
+			if (!default_slot) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+
+			if (default_slot) default_slot.d(detach);
+
+			if (detach) {
+				detachNode(text2);
+			}
+		}
+	};
+}
+
+function create_fragment$1(ctx) {
+	var if_block_anchor;
+
+	var if_block = (ctx.$selectedRoute && ctx.$selectedRoute.route == ctx.route) && create_if_block(ctx);
+
+	return {
+		c: function create() {
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+		},
+
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+
+		m: function mount(target, anchor) {
+			if (if_block) if_block.m(target, anchor);
+			insert(target, if_block_anchor, anchor);
+		},
+
+		p: function update(changed, ctx) {
+			if (ctx.$selectedRoute && ctx.$selectedRoute.route == ctx.route) {
+				if (if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block = create_if_block(ctx);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+		},
+
+		i: noop,
+		o: noop,
+
+		d: function destroy(detach) {
+			if (if_block) if_block.d(detach);
+
+			if (detach) {
+				detachNode(if_block_anchor);
+			}
+		}
+	};
+}
+
+function instance$1($$self, $$props, $$invalidate) {
+	
+
+	let { path, componentImport } = $$props;
+
+	let ComponentPromise; 
+	let componentRef;
+
+	const route = { path, componentImport };
+
+	const { registerRoute, unregisterRoute, selectedRoute } = getContext(ROUTER);
+	
+	registerRoute(route);
+
+	selectedRoute.subscribe(val => {
+		if(val && val.route == route) {
+			console.log(`Dynamically importing route "${route.path}"`);
+			ComponentPromise = componentImport().then(({default: Component}) => {
+				return new Component({target: componentRef});
+			}); $$invalidate('ComponentPromise', ComponentPromise); 
+		}
+	});
+
+	let { $$slot_default, $$scope } = $$props;
+
+	function div_binding($$node, check) {
+		componentRef = $$node;
+		$$invalidate('componentRef', componentRef);
+	}
+
+	let $selectedRoute;
+	validate_store(selectedRoute, 'selectedRoute');
+	$$self.$$.on_destroy.push(selectedRoute.subscribe($$value => { $selectedRoute = $$value; $$invalidate('$selectedRoute', $selectedRoute); }));
+
+	$$self.$set = $$props => {
+		if ('path' in $$props) $$invalidate('path', path = $$props.path);
+		if ('componentImport' in $$props) $$invalidate('componentImport', componentImport = $$props.componentImport);
+		if ('$$scope' in $$props) $$invalidate('$$scope', $$scope = $$props.$$scope);
+	};
+
+	return {
+		path,
+		componentImport,
+		ComponentPromise,
+		componentRef,
+		route,
+		div_binding,
+		$selectedRoute,
+		$$slot_default,
+		$$scope
+	};
+}
+
+class Route extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1, create_fragment$1, safe_not_equal);
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+		if (ctx.path === undefined && !('path' in props)) {
+			console.warn("<Route> was created without expected prop 'path'");
+		}
+		if (ctx.componentImport === undefined && !('componentImport' in props)) {
+			console.warn("<Route> was created without expected prop 'componentImport'");
+		}
+	}
+
+	get path() {
+		return this.$$.ctx.path;
+	}
+
+	set path(path) {
+		this.$set({ path });
+		flush();
+	}
+
+	get componentImport() {
+		return this.$$.ctx.componentImport;
+	}
+
+	set componentImport(componentImport) {
+		this.$set({ componentImport });
+		flush();
+	}
+}
+
+/* src\App.html generated by Svelte v3.0.0-alpha19 */
+
+// (6:0) <Router>
+function create_default_slot(ctx) {
+	var text, current;
+
+	var route0 = new Route({
+		props: { path: "/", componentImport: func },
+		$$inline: true
+	});
+
+	var route1 = new Route({
+		props: {
+		path: "/other",
+		componentImport: func_1
+	},
+		$$inline: true
+	});
+
+	return {
+		c: function create() {
+			route0.$$.fragment.c();
+			text = createText("\n\t");
+			route1.$$.fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			mount_component(route0, target, anchor);
+			insert(target, text, anchor);
+			mount_component(route1, target, anchor);
+		},
+
+		p: noop,
+
+		i: function intro() {
+			if (current) return;
+			route0.$$.fragment.i();
+
+			route1.$$.fragment.i();
+
+			current = true;
+		},
+
+		o: function outro() {
+			if (route0) route0.$$.fragment.o();
+			if (route1) route1.$$.fragment.o();
+			current = false;
+		},
+
+		d: function destroy(detach) {
+			route0.$destroy(detach);
+
+			if (detach) {
+				detachNode(text);
+			}
+
+			route1.$destroy(detach);
+		}
+	};
+}
+
+function create_fragment$2(ctx) {
+	var current;
+
+	var router = new Router({
+		props: {
+		$$slot_default: [create_default_slot],
+		$$scope: { ctx }
+	},
+		$$inline: true
+	});
+
+	return {
+		c: function create() {
+			router.$$.fragment.c();
+		},
+
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+
+		m: function mount(target, anchor) {
+			mount_component(router, target, anchor);
+		},
+
+		p: noop,
+
+		i: function intro() {
+			if (current) return;
+			router.$$.fragment.i();
+
+			current = true;
+		},
+
+		o: function outro() {
+			if (router) router.$$.fragment.o();
+			current = false;
+		},
+
+		d: function destroy(detach) {
+			router.$destroy(detach);
+		}
+	};
+}
+
+function func() {
+	return import("./Home.js");
+}
+
+function func_1() {
+	return import("./Other.js");
+}
+
+class App extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, null, create_fragment$2, safe_not_equal);
+	}
+}
+
+es6ObjectAssign_2();
+
+const app = new App({
+  target: document.body,
+  data: {}
+});
+
+export default app;

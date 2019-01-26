@@ -1,0 +1,16 @@
+<script>
+
+  import {onMount} from 'svelte'; 
+
+  export let href; 
+
+  const handleClick = function(evt) {
+    evt.preventDefault(); 
+    history.pushState(null,null,location.origin + this.getAttribute('href'));
+  }
+
+</script>
+
+<a href={href} on:click={handleClick}>
+  <slot></slot>
+</a>

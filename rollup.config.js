@@ -48,7 +48,7 @@ const production = !process.env.ROLLUP_WATCH;
 const test = {
   input: "src/test.js",
   output: {
-    sourcemap: true,
+    sourcemap: false,
     format: "es",
     // name: "app",
     dir: 'docs/module',
@@ -77,14 +77,13 @@ const test = {
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve(),
     commonjs(),
-    buble({ objectAssign: true }),
+    // buble({ objectAssign: true }),
 
     !production && browsersync({ server: "docs" }),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
-    // production && terser()
-    terser()
+    production && terser()
   ]
 };
 

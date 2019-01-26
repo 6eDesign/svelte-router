@@ -1,7 +1,7 @@
 function noop() {}
 
 function assign(tar, src) {
-	for (var k in src) { tar[k] = src[k]; }
+	for (var k in src) tar[k] = src[k];
 	return tar;
 }
 
@@ -11,7 +11,7 @@ function isPromise(value) {
 
 function addLoc(element, file, line, column, char) {
 	element.__svelte_meta = {
-		loc: { file: file, line: line, column: column, char: char }
+		loc: { file, line, column, char }
 	};
 }
 
@@ -37,13 +37,13 @@ function safe_not_equal(a, b) {
 
 function validate_store(store, name) {
 	if (!store || typeof store.subscribe !== 'function') {
-		throw new Error(("'" + name + "' is not a store with a 'subscribe' method"));
+		throw new Error(`'${name}' is not a store with a 'subscribe' method`);
 	}
 }
 
 function create_slot(definition, ctx) {
 	if (definition) {
-		var slot_ctx = definition[1]
+		const slot_ctx = definition[1]
 			? assign({}, assign(ctx.$$scope.ctx, definition[1](ctx)))
 			: ctx.$$scope.ctx;
 
@@ -77,7 +77,7 @@ function createComment() {
 
 function addListener(node, event, handler, options) {
 	node.addEventListener(event, handler, options);
-	return function () { return node.removeEventListener(event, handler, options); };
+	return () => node.removeEventListener(event, handler, options);
 }
 
 function children (element) {
@@ -88,14 +88,14 @@ function setData(text, data) {
 	text.data = '' + data;
 }
 
-var current_component;
+let current_component;
 
 function set_current_component(component) {
 	current_component = component;
 }
 
 function get_current_component() {
-	if (!current_component) { throw new Error("Function called outside component initialization"); }
+	if (!current_component) throw new Error(`Function called outside component initialization`);
 	return current_component;
 }
 
@@ -111,11 +111,11 @@ function getContext(key) {
 	return get_current_component().$$.context.get(key);
 }
 
-var dirty_components = [];
+let dirty_components = [];
 
-var update_scheduled = false;
-var binding_callbacks = [];
-var render_callbacks = [];
+let update_scheduled = false;
+const binding_callbacks = [];
+const render_callbacks = [];
 
 function schedule_update() {
 	if (!update_scheduled) {
@@ -133,24 +133,24 @@ function add_binding_callback(fn) {
 }
 
 function flush() {
-	var seen_callbacks = new Set();
+	const seen_callbacks = new Set();
 
 	do {
 		// first, call beforeUpdate functions
 		// and update components
 		while (dirty_components.length) {
-			var component = dirty_components.shift();
+			const component = dirty_components.shift();
 			set_current_component(component);
 			update(component.$$);
 		}
 
-		while (binding_callbacks.length) { binding_callbacks.shift()(); }
+		while (binding_callbacks.length) binding_callbacks.shift()();
 
 		// then, once components are updated, call
 		// afterUpdate functions. This may cause
 		// subsequent updates...
 		while (render_callbacks.length) {
-			var callback = render_callbacks.pop();
+			const callback = render_callbacks.pop();
 			if (!seen_callbacks.has(callback)) {
 				callback();
 
@@ -175,31 +175,27 @@ function update($$) {
 }
 
 function queue_microtask(callback) {
-	Promise.resolve().then(function () {
-		if (update_scheduled) { callback(); }
+	Promise.resolve().then(() => {
+		if (update_scheduled) callback();
 	});
 }
 
 function handlePromise(promise, info) {
-	var obj;
-
 	var token = info.token = {};
 
 	function update(type, index, key, value) {
-		var obj;
+		if (info.token !== token) return;
 
-		if (info.token !== token) { return; }
+		info.resolved = key && { [key]: value };
 
-		info.resolved = key && ( obj = {}, obj[key] = value, obj );
-
-		var child_ctx = assign(assign({}, info.ctx), info.resolved);
-		var block = type && (info.current = type)(child_ctx);
+		const child_ctx = assign(assign({}, info.ctx), info.resolved);
+		const block = type && (info.current = type)(child_ctx);
 
 		if (info.block) {
 			if (info.blocks) {
-				info.blocks.forEach(function (block, i) {
+				info.blocks.forEach((block, i) => {
 					if (i !== index && block) {
-						block.o(function () {
+						block.o(() => {
 							block.d(1);
 							info.blocks[i] = null;
 						});
@@ -211,19 +207,19 @@ function handlePromise(promise, info) {
 
 			block.c();
 			block.m(info.mount(), info.anchor);
-			if (block.i) { block.i(); }
+			if (block.i) block.i();
 
 			flush();
 		}
 
 		info.block = block;
-		if (info.blocks) { info.blocks[index] = block; }
+		if (info.blocks) info.blocks[index] = block;
 	}
 
 	if (isPromise(promise)) {
-		promise.then(function (value) {
+		promise.then(value => {
 			update(info.then, 1, info.value, value);
-		}, function (error) {
+		}, error => {
 			update(info.catch, 2, info.error, error);
 		});
 
@@ -238,26 +234,22 @@ function handlePromise(promise, info) {
 			return true;
 		}
 
-		info.resolved = ( obj = {}, obj[info.value] = promise, obj );
+		info.resolved = { [info.value]: promise };
 	}
 }
 
 function mount_component(component, target, anchor) {
-	var ref = component.$$;
-	var fragment = ref.fragment;
-	var on_mount = ref.on_mount;
-	var on_destroy = ref.on_destroy;
-	var after_render = ref.after_render;
+	const { fragment, on_mount, on_destroy, after_render } = component.$$;
 
 	fragment.m(target, anchor);
 
 	// onMount happens after the initial afterUpdate. Because
 	// afterUpdate callbacks happen in reverse order (inner first)
 	// we schedule onMount callbacks before afterUpdate callbacks
-	add_render_callback(function () {
-		var new_on_destroy = on_mount.map(run).filter(is_function);
+	add_render_callback(() => {
+		const new_on_destroy = on_mount.map(run).filter(is_function);
 		if (on_destroy) {
-			on_destroy.push.apply(on_destroy, new_on_destroy);
+			on_destroy.push(...new_on_destroy);
 		} else {
 			// Edge case — component was destroyed immediately,
 			// most likely as a result of a binding initialising
@@ -291,12 +283,12 @@ function make_dirty(component, key) {
 }
 
 function init(component, options, instance, create_fragment, not_equal$$1) {
-	var parent_component = current_component;
+	const parent_component = current_component;
 	set_current_component(component);
 
-	var props = options.props || {};
+	const props = options.props || {};
 
-	var $$ = component.$$ = {
+	const $$ = component.$$ = {
 		fragment: null,
 		ctx: null,
 
@@ -317,14 +309,14 @@ function init(component, options, instance, create_fragment, not_equal$$1) {
 		dirty: null
 	};
 
-	var ready = false;
+	let ready = false;
 
 	$$.ctx = instance
-		? instance(component, props, function (key, value) {
-			if ($$.bound[key]) { $$.bound[key](value); }
+		? instance(component, props, (key, value) => {
+			if ($$.bound[key]) $$.bound[key](value);
 
 			if ($$.ctx) {
-				var changed = not_equal$$1(value, $$.ctx[key]);
+				const changed = not_equal$$1(value, $$.ctx[key]);
 				if (ready && changed) {
 					make_dirty(component, key);
 				}
@@ -348,102 +340,49 @@ function init(component, options, instance, create_fragment, not_equal$$1) {
 		}
 
 		mount_component(component, options.target, options.anchor);
-		if (options.intro && component.$$.fragment.i) { component.$$.fragment.i(); }
+		if (options.intro && component.$$.fragment.i) component.$$.fragment.i();
 		flush();
 	}
 
 	set_current_component(parent_component);
 }
 
-var SvelteElement;
-if (typeof HTMLElement !== 'undefined') {
-	SvelteElement = /*@__PURE__*/(function (HTMLElement) {
-		function SvelteElement() {
-			HTMLElement.call(this);
-			this.attachShadow({ mode: 'open' });
-		}
-
-		if ( HTMLElement ) SvelteElement.__proto__ = HTMLElement;
-		SvelteElement.prototype = Object.create( HTMLElement && HTMLElement.prototype );
-		SvelteElement.prototype.constructor = SvelteElement;
-
-		SvelteElement.prototype.connectedCallback = function connectedCallback () {
-			for (var key in this.$$.slotted) {
-				this.appendChild(this.$$.slotted[key]);
-			}
-		};
-
-		SvelteElement.prototype.attributeChangedCallback = function attributeChangedCallback (attr, oldValue, newValue) {
-			this[attr] = newValue;
-		};
-
-		SvelteElement.prototype.$destroy = function $destroy () {
-			destroy(this, true);
-			this.$destroy = noop;
-		};
-
-		SvelteElement.prototype.$on = function $on (type, callback) {
-			// TODO should this delegate to addEventListener?
-			var callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-			callbacks.push(callback);
-
-			return function () {
-				var index = callbacks.indexOf(callback);
-				if (index !== -1) { callbacks.splice(index, 1); }
-			};
-		};
-
-		SvelteElement.prototype.$set = function $set () {
-			// overridden by instance, if it has props
-		};
-
-		return SvelteElement;
-	}(HTMLElement));
-}
-
-var SvelteComponent = function SvelteComponent () {};
-
-SvelteComponent.prototype.$destroy = function $destroy () {
-	destroy(this, true);
-	this.$destroy = noop;
-};
-
-SvelteComponent.prototype.$on = function $on (type, callback) {
-	var callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-	callbacks.push(callback);
-
-	return function () {
-		var index = callbacks.indexOf(callback);
-		if (index !== -1) { callbacks.splice(index, 1); }
-	};
-};
-
-SvelteComponent.prototype.$set = function $set () {
-	// overridden by instance, if it has props
-};
-
-var SvelteComponentDev = /*@__PURE__*/(function (SvelteComponent) {
-	function SvelteComponentDev(options) {
-		if (!options || (!options.target && !options.$$inline)) {
-			throw new Error("'target' is a required option");
-		}
-
-		SvelteComponent.call(this);
+class SvelteComponent {
+	$destroy() {
+		destroy(this, true);
+		this.$destroy = noop;
 	}
 
-	if ( SvelteComponent ) SvelteComponentDev.__proto__ = SvelteComponent;
-	SvelteComponentDev.prototype = Object.create( SvelteComponent && SvelteComponent.prototype );
-	SvelteComponentDev.prototype.constructor = SvelteComponentDev;
+	$on(type, callback) {
+		const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+		callbacks.push(callback);
 
-	SvelteComponentDev.prototype.$destroy = function $destroy () {
-		SvelteComponent.prototype.$destroy.call(this);
-		this.$destroy = function () {
-			console.warn("Component was already destroyed");
+		return () => {
+			const index = callbacks.indexOf(callback);
+			if (index !== -1) callbacks.splice(index, 1);
 		};
-	};
+	}
 
-	return SvelteComponentDev;
-}(SvelteComponent));
+	$set() {
+		// overridden by instance, if it has props
+	}
+}
+
+class SvelteComponentDev extends SvelteComponent {
+	constructor(options) {
+		if (!options || (!options.target && !options.$$inline)) {
+			throw new Error(`'target' is a required option`);
+		}
+
+		super();
+	}
+
+	$destroy() {
+		super.$destroy();
+		this.$destroy = () => {
+			console.warn(`Component was already destroyed`);
+		};
+	}
+}
 
 export { run_all as a, noop as b, SvelteComponentDev as c, addListener as d, create_slot as e, init as f, safe_not_equal as g, setContext as h, onMount as i, addLoc as j, add_binding_callback as k, append as l, assign as m, createComment as n, createElement as o, createText as p, detachNode as q, flush as r, handlePromise as s, insert as t, setData as u, validate_store as v, getContext as w, mount_component as x };
-//# sourceMappingURL=chunk-8c712974.js.map
