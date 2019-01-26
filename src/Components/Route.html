@@ -6,6 +6,7 @@
 	export let componentImport;
 
 	let ComponentPromise; 
+	let componentRef;
 
 	const route = { path, componentImport };
 
@@ -16,22 +17,23 @@
 	selectedRoute.subscribe(val => {
 		if(val && val.route == route) {
 			console.log(`Dynamically importing route "${route.path}"`);
-			ComponentPromise = componentImport().then(({default: comp}) => {
-				console.log(comp);
-				return comp;
+			ComponentPromise = componentImport().then(({default: Component}) => {
+				return new Component({target: componentRef});
 			}); 
 		}
 	});
 	
 </script>
 
+Selected Route: {JSON.stringify($selectedRoute,null,2)}
+
 {#if $selectedRoute && $selectedRoute.route == route}
 	{#await ComponentPromise}
 		<slot>
 			<p>Loading... {JSON.stringify($selectedRoute,null,2)}</p>
 		</slot>
-	{:then something}
-		Loaded! {Component}
-		<!-- <Component params={$selectedRoute.params} /> -->
+	{:catch}
+		Error!
 	{/await}
+	<div bind:this={componentRef}></div>
 {/if}
