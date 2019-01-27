@@ -14,7 +14,6 @@
 	const { registerRoute, selectedRoute } = getContext(ROUTER);
 	
 	registerRoute(route);
-	let activeRoute = null;
 
 	selectedRoute.subscribe(selected => {
 		if(selected && selected.route == route) {
