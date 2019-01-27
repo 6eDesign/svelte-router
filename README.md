@@ -1,4 +1,4 @@
-# svelte-calendar
+# svelte-router
 A little router component that uses code splitting for components. Uses page.js (~2kb min/gzip) for routing. 
 
 ## A Work in Progress: 
