@@ -1,14 +1,37 @@
 <script>
 	import Router from './Components/Router.html';
 	import Route from './Components/Route.html';
+	import HomeRoute from './Components/test/HomeRoute.html';
 </script>
 
 <div>
-	<Router>
+	<Router hashbang={true}>
 		<!-- Route paths can be strings (exact matches or express-style named-params) or regex -->
-		<!-- componentImport is a function which dynamically imports the necessary component -->
-		<Route path='/' componentImport={() => import('./Components/test/HomeRoute.html')} />
-		<Route path={/\/regex-route\.(\d+)/} componentImport={() => import('./Components/test/RegexRoute.html')} />
-		<Route path='/named/:id' componentImport={() => import('./Components/test/NamedParamsRoute.html')} />
+		<Route 
+			path='/' 
+		>
+			<div slot="component">
+				<HomeRoute />
+			</div>
+		</Route>
+		<!-- 
+			asyncComponent is an optional prop which provides a function which 
+			dynamically imports the necessary component for a route 
+		-->
+		<Route 
+			path={/\/regex-route\.(\d+)/} 
+			asyncComponent={() => import('./Components/test/RegexRoute.html')} 
+		/>
+		<Route 
+			path='/named/:id' 
+			asyncComponent={() => import('./Components/test/NamedParamsRoute.html')} 
+		>
+			<!-- 
+				with asynchronously loaded route components you can also specify 
+				loading and error slots on a per-route basis
+			 -->
+			 <div slot="loading">LOADING...</div>
+			 <div slot="error">ERROR!</div>
+		</Route> 
 	</Router>
 </div>

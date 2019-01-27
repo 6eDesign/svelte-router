@@ -3,13 +3,15 @@
 </script>
 
 <script>
-	import { setContext, onMount } from 'svelte';
+	import { setContext, onMount, afterUpdate } from 'svelte';
 	import { writable, derive } from 'svelte/store';
 	import page from 'page.js';
 	
 	let selectedRoute = writable(null);
 
-	const routeMiddleware = route => (ctx,next) => { 
+	export let hashbang = false;
+
+	const routeMiddleware = route => (ctx) => { 
 		selectedRoute.set({ctx, route});
 	};
 	
@@ -21,9 +23,11 @@
 	});
 
 	onMount(() => {
-		page(); 
+		setTimeout(() => {
+			page({hashbang}); 
+		}, 0);
 	});
-	
+
 </script>
 
 <!-- todo.. figure this bit out -->

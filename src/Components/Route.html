@@ -1,49 +1,62 @@
+<script context="module">
+	export const ROUTE = { }; 
+</script>
+
 <script>
-	import { getContext, onDestroy } from 'svelte';
+	import { getContext, setContext, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { ROUTER } from './Router.html';
 
+	const { registerRoute, selectedRoute } = getContext(ROUTER);
+
 	export let path; 
-	export let componentImport;
+	export let asyncComponent = null;
+
+	const route = { path, asyncComponent, ctx: { } };
 
 	let componentPromise; 
 	let target;
 
-	const route = { path, componentImport };
-
-	const { registerRoute, selectedRoute } = getContext(ROUTER);
+	setContext(ROUTE, route);
 	
 	registerRoute(route);
-
 	selectedRoute.subscribe(selected => {
-		if(selected && selected.route == route) {
+		if(!selected) return;
+		route.ctx = selected.ctx;
+		if(asyncComponent && selected && selected.route == route) {
 			componentPromise = Promise.all([
-				componentImport(), 
+				asyncComponent(), 
 				// todo: optionally fetch data/props concurrently with component import?
 			])
-			.then(([{default: Component}, data]) => {
+			.then(([{default: Component}, props]) => {
 				return new Component({
-					target, 
-					props: { 
-						route: selected.ctx
-					}
+					target
 				});
+			})
+			.catch(err => {
+				console.log('Todo: handle error with generic/specific handler:\n', err)
+				throw err;
 			}); 
 		}
 	});
 
+
 </script>
 
 {#if $selectedRoute && $selectedRoute.route == route}
-	{#await componentPromise}
-		<slot name="loading">
-			<p>Loading... </p>
-		</slot>
-	{:then}
-	{:catch}
-		<slot name="error">
-			Error!
-		</slot>
-	{/await}
-	<div bind:this={target}></div>
+	{#if asyncComponent}
+		{#await componentPromise}
+			<slot name="loading">
+				<p>Loading... </p>
+			</slot>
+		{:then}
+		{:catch}
+			<slot name="error">
+				Error!
+			</slot>
+		{/await}
+		<div bind:this={target}></div>
+	{:else}
+		<slot name="component"></slot>
+	{/if}
 {/if}
