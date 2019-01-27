@@ -75,11 +75,6 @@ function createComment() {
 	return document.createComment('');
 }
 
-function addListener(node, event, handler, options) {
-	node.addEventListener(event, handler, options);
-	return () => node.removeEventListener(event, handler, options);
-}
-
 function children (element) {
 	return Array.from(element.childNodes);
 }
@@ -101,6 +96,10 @@ function get_current_component() {
 
 function onMount(fn) {
 	get_current_component().$$.on_mount.push(fn);
+}
+
+function onDestroy(fn) {
+	get_current_component().$$.on_destroy.push(fn);
 }
 
 function setContext(key, context) {
@@ -385,5 +384,5 @@ class SvelteComponentDev extends SvelteComponent {
 	}
 }
 
-export { run_all as a, noop as b, SvelteComponentDev as c, create_slot as d, init as e, safe_not_equal as f, setContext as g, onMount as h, addLoc as i, add_binding_callback as j, append as k, assign as l, createComment as m, createElement as n, createText as o, detachNode as p, flush as q, handlePromise as r, insert as s, setData as t, validate_store as u, getContext as v, mount_component as w, addListener as x };
-//# sourceMappingURL=chunk-0191df90.js.map
+export { run_all as a, noop as b, SvelteComponentDev as c, create_slot as d, init as e, safe_not_equal as f, setContext as g, onMount as h, addLoc as i, add_binding_callback as j, append as k, assign as l, createComment as m, createElement as n, createText as o, detachNode as p, flush as q, handlePromise as r, insert as s, setData as t, validate_store as u, getContext as v, onDestroy as w, mount_component as x };
+//# sourceMappingURL=chunk-108c6043.js.map

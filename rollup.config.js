@@ -48,7 +48,7 @@ const production = !process.env.ROLLUP_WATCH;
 const test = {
   input: "src/test.js",
   output: {
-    sourcemap: false,
+    sourcemap: true,
     format: "es",
     // name: "app",
     dir: 'docs/module',

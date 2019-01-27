@@ -1,39 +1,50 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
+	import { writable } from 'svelte/store';
 	import { ROUTER } from './Router.html';
 
 	export let path; 
 	export let componentImport;
 
-	let ComponentPromise; 
-	let componentRef;
+	let componentPromise; 
+	let target;
 
 	const route = { path, componentImport };
 
-	const { registerRoute, unregisterRoute, selectedRoute } = getContext(ROUTER);
+	const { registerRoute, selectedRoute } = getContext(ROUTER);
 	
 	registerRoute(route);
+	let activeRoute = null;
 
-	selectedRoute.subscribe(val => {
-		if(val && val.route == route) {
-			console.log(`Dynamically importing route "${route.path}"`);
-			ComponentPromise = componentImport().then(({default: Component}) => {
-				return new Component({target: componentRef});
+	selectedRoute.subscribe(selected => {
+		if(selected && selected.route == route) {
+			componentPromise = Promise.all([
+				componentImport(), 
+				// todo: optionally fetch data/props concurrently with component import?
+			])
+			.then(([{default: Component}, data]) => {
+				return new Component({
+					target, 
+					props: { 
+						route: selected.ctx
+					}
+				});
 			}); 
 		}
 	});
-	
+
 </script>
 
-<!-- Selected Route: {JSON.stringify($selectedRoute,null,2)} -->
-
 {#if $selectedRoute && $selectedRoute.route == route}
-	{#await ComponentPromise}
-		<slot>
-			<p>Loading... {JSON.stringify($selectedRoute,null,2)}</p>
+	{#await componentPromise}
+		<slot name="loading">
+			<p>Loading... </p>
 		</slot>
+	{:then}
 	{:catch}
-		Error!
+		<slot name="error">
+			Error!
+		</slot>
 	{/await}
-	<div bind:this={componentRef}></div>
+	<div bind:this={target}></div>
 {/if}

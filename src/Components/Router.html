@@ -5,38 +5,26 @@
 <script>
 	import { setContext, onMount } from 'svelte';
 	import { writable, derive } from 'svelte/store';
-	import determineRoute from '../lib/determineRoute';
+	import page from 'page.js';
 	
-	let routes = writable([]);
-	let path = writable(null);
-	let selectedRoute = derive([routes, path], ([routes, path]) => { 
-		if(!path || !routes) return null;
-		let route = determineRoute(routes,path);
-		return route;
-	}); 
+	let selectedRoute = writable(null);
 
-	const locationChange = (evt) => { 
-		if(evt) evt.preventDefault(); 
-		path.set(location.pathname); 
-	}; 
+	const routeMiddleware = route => (ctx,next) => { 
+		selectedRoute.set({ctx, route});
+	};
 	
 	setContext(ROUTER, { 
-		registerRoute(conf) { 
-			routes.update(current => { 
-				current.push(conf);
-				return current;
-			});
+		registerRoute(route) { 
+			page(route.path, routeMiddleware(route)); 
 		}, 
 		selectedRoute
 	});
 
-	onMount(locationChange);
+	onMount(() => {
+		page(); 
+	});
 	
 </script>
 
 <!-- todo.. figure this bit out -->
-<svelte:window 
-	on:hashchange={locationChange} 
-	on:onpopstate={locationChange} 
-/>
 <slot></slot>

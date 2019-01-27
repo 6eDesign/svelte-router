@@ -6,6 +6,7 @@
 
   const handleClick = function(evt) {
     evt.preventDefault(); 
+    console.log('hi');
     history.pushState(null,null,location.origin + this.getAttribute('href'));
   }
 

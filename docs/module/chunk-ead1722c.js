@@ -41,14 +41,17 @@ function validate_store(store, name) {
 	}
 }
 
-function create_slot(definition, ctx) {
+function create_slot(definition, ctx, fn) {
 	if (definition) {
-		const slot_ctx = definition[1]
-			? assign({}, assign(ctx.$$scope.ctx, definition[1](ctx)))
-			: ctx.$$scope.ctx;
-
+		const slot_ctx = get_slot_context(definition, ctx, fn);
 		return definition[0](slot_ctx);
 	}
+}
+
+function get_slot_context(definition, ctx, fn) {
+	return definition[1]
+		? assign({}, assign(ctx.$$scope.ctx, definition[1](fn ? fn(ctx) : {})))
+		: ctx.$$scope.ctx;
 }
 
 function append(target, node) {
@@ -75,17 +78,27 @@ function createComment() {
 	return document.createComment('');
 }
 
-function addListener(node, event, handler, options) {
-	node.addEventListener(event, handler, options);
-	return () => node.removeEventListener(event, handler, options);
-}
-
 function children (element) {
 	return Array.from(element.childNodes);
 }
 
-function setData(text, data) {
-	text.data = '' + data;
+let outros;
+
+function group_outros() {
+	outros = {
+		remaining: 0,
+		callbacks: []
+	};
+}
+
+function check_outros() {
+	if (!outros.remaining) {
+		run_all(outros.callbacks);
+	}
+}
+
+function on_outro(callback) {
+	outros.callbacks.push(callback);
 }
 
 let current_component;
@@ -195,10 +208,13 @@ function handlePromise(promise, info) {
 			if (info.blocks) {
 				info.blocks.forEach((block, i) => {
 					if (i !== index && block) {
-						block.o(() => {
+						group_outros();
+						on_outro(() => {
 							block.d(1);
 							info.blocks[i] = null;
 						});
+						block.o();
+						check_outros();
 					}
 				});
 			} else {
@@ -385,5 +401,5 @@ class SvelteComponentDev extends SvelteComponent {
 	}
 }
 
-export { run_all as a, noop as b, SvelteComponentDev as c, create_slot as d, init as e, safe_not_equal as f, setContext as g, onMount as h, addLoc as i, add_binding_callback as j, append as k, assign as l, createComment as m, createElement as n, createText as o, detachNode as p, flush as q, handlePromise as r, insert as s, setData as t, validate_store as u, getContext as v, mount_component as w, addListener as x };
-//# sourceMappingURL=chunk-0191df90.js.map
+export { run_all as a, noop as b, SvelteComponentDev as c, assign as d, create_slot as e, get_slot_context as f, init as g, safe_not_equal as h, setContext as i, onMount as j, addLoc as k, add_binding_callback as l, createComment as m, createElement as n, createText as o, detachNode as p, flush as q, handlePromise as r, insert as s, validate_store as t, getContext as u, mount_component as v, append as w };
+//# sourceMappingURL=chunk-ead1722c.js.map

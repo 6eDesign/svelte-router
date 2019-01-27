@@ -1,5 +1,3 @@
-import { polyfill } from "es6-object-assign";
-polyfill();
 import App from "./App.html";
 
 const app = new App({
