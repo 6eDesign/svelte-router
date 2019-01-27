@@ -7,52 +7,12 @@ import buble from "rollup-plugin-buble";
 
 const production = !process.env.ROLLUP_WATCH;
 
-// const bundle = {
-//   input: "src/main.js",
-//   output: {
-//     sourcemap: true,
-//     format: "iife",
-//     name: "SvelteCalendar",
-//     file: "docs/bundle.js"
-//   },
-//   plugins: [
-//     svelte({
-//       // opt in to v3 behaviour today
-//       skipIntroByDefault: true,
-//       nestedTransitions: true,
-
-//       // enable run-time checks when not in production
-//       dev: !production,
-//       // we'll extract any component CSS out into
-//       // a separate file — better for performance
-//       css: css => {
-//         css.write("docs/bundle.css");
-//       }
-//     }),
-
-//     // If you have external dependencies installed from
-//     // npm, you'll most likely need these plugins. In
-//     // some cases you'll need additional configuration —
-//     // consult the documentation for details:
-//     // https://github.com/rollup/rollup-plugin-commonjs
-//     resolve(),
-//     commonjs(),
-//     buble({ objectAssign: true }),
-
-//     // If we're building for production (npm run build
-//     // instead of npm run dev), minify
-//     terser()
-//   ]
-// };
-
 const test = {
-  input: "src/test.js",
+  input: "src/app.js",
   output: {
     sourcemap: true,
     format: "es",
-    // name: "app",
-    dir: 'docs/module',
-    // file: "docs/test.js"
+    dir: 'public/module'
   },
   experimentalCodeSplitting: true, 
   plugins: [
@@ -66,7 +26,7 @@ const test = {
       // we'll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
-        css.write("docs/test.css");
+        css.write("public/app.css");
       }
     }),
 
@@ -77,9 +37,9 @@ const test = {
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve(),
     commonjs(),
-    // buble({ objectAssign: true }),
+    buble({ objectAssign: true }),
 
-    !production && browsersync({ server: "docs" }),
+    !production && browsersync({ server: "public" }),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify

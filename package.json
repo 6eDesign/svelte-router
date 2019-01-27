@@ -1,7 +1,7 @@
 {
-  "name": "svelte-router",
-  "svelte": "src/Components/Router.html",
+  "name": "@6eDesign/svelte-router",
   "version": "0.0.1",
+  "main": "src/main.js",
   "devDependencies": {
     "npm-run-all": "^4.1.3",
     "page.js": "^4.13.3",

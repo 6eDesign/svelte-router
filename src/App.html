@@ -3,10 +3,12 @@
 	import Route from './Components/Route.html';
 </script>
 
-<Router>
-	<!-- Route paths can be strings (exact matches or express-style named-params) or regex -->
-	<!-- componentImport is a function which dynamically imports the necessary component -->
-	<Route path='/' componentImport={() => import('./Components/test/HomeRoute.html')} />
-	<Route path={/\/regex-route\.(\d+)/} componentImport={() => import('./Components/test/RegexRoute.html')} />
-	<Route path='/named/:id' componentImport={() => import('./Components/test/NamedParamsRoute.html')} />
-</Router>
+<div>
+	<Router>
+		<!-- Route paths can be strings (exact matches or express-style named-params) or regex -->
+		<!-- componentImport is a function which dynamically imports the necessary component -->
+		<Route path='/' componentImport={() => import('./Components/test/HomeRoute.html')} />
+		<Route path={/\/regex-route\.(\d+)/} componentImport={() => import('./Components/test/RegexRoute.html')} />
+		<Route path='/named/:id' componentImport={() => import('./Components/test/NamedParamsRoute.html')} />
+	</Router>
+</div>
