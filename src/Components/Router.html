@@ -15,8 +15,10 @@
 	export let ErrorComponent = null;
 
 	const applyMetadata = ({ metadata: route }) => (ctx,next) => { 
-		ctx.route = route; 
-		ctx.router = metadata;
+		ctx.metadata = { 
+			route, 
+			router: metadata
+		};
 		next(); 
 	};
 
