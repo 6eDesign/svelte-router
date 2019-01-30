@@ -1,7 +1,7 @@
 <script>
-  import { getContext } from 'svelte'; 
-  import { ROUTE } from '../Route.html';
-  let route = getContext(ROUTE); 
+  import { getContext, onMount } from 'svelte'; 
+  import { ROUTER } from '../Router.html';
+  let { selectedRoute } = getContext(ROUTER); 
 </script>
 
 <h1>Regex Route</h1>
@@ -9,5 +9,5 @@
 <p>
   <strong>route:</strong>
 </p>
-<pre>{JSON.stringify(route.ctx,null,2)}</pre>
+<pre>{JSON.stringify($selectedRoute.ctx,null,2)}</pre>
 <p>Go <a href="/">home.</a></p>

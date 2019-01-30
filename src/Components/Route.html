@@ -1,48 +1,49 @@
-<script context="module">
-	export const ROUTE = { }; 
-</script>
-
 <script>
-	import { getContext, setContext, onDestroy } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { ROUTER } from './Router.html';
 
-	const { registerRoute, selectedRoute } = getContext(ROUTER);
+	const {
+		registerRoute, 
+		selectedRoute, 
+		ErrorComponent=null 
+	} = getContext(ROUTER);
 
+	// props
 	export let path; 
 	export let asyncComponent = null;
+	export let component = null;
+	export let middleware = [];
+	export let metadata = { }
 
-	const route = { path, asyncComponent, ctx: { } };
-
+	// template variables
 	let componentPromise; 
 	let target;
+	let routeError = null;
 
-	setContext(ROUTE, route);
-	
+	const route = { path, asyncComponent, middleware, metadata };
+
 	registerRoute(route);
+
 	selectedRoute.subscribe(selected => {
 		if(!selected) return;
-		route.ctx = selected.ctx;
 		if(asyncComponent && selected && selected.route == route) {
-			componentPromise = Promise.all([
-				asyncComponent(), 
-				// todo: optionally fetch data/props concurrently with component import?
-			])
-			.then(([{default: Component}, props]) => {
-				return new Component({
-					target
-				});
-			})
-			.catch(err => {
-				console.log('Todo: handle error with generic/specific handler:\n', err)
-				throw err;
+			componentPromise = asyncComponent().then(
+				({default: Component}) => {
+					return new Component({
+						target
+					});
 			}); 
 		}
 	});
 
-
 </script>
 
+<!-- todo: 
+			change all slots to vars w/ svelte:component
+			or maintain option of using slot or component
+			everywhere? 
+-->
 {#if $selectedRoute && $selectedRoute.route == route}
 	{#if asyncComponent}
 		{#await componentPromise}
@@ -52,10 +53,16 @@
 		{:then}
 		{:catch}
 			<slot name="error">
-				Error!
+				{#if ErrorComponent}
+					<svelte:component this={ErrorComponent} />
+				{:else}
+					<p>Error!</p>
+				{/if}
 			</slot>
 		{/await}
 		<div bind:this={target}></div>
+	{:elseif component}
+		<svelte:component this={component} />
 	{:else}
 		<slot name="component"></slot>
 	{/if}

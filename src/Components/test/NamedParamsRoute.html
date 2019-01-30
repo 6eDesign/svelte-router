@@ -1,15 +1,13 @@
 <script>
   import { getContext } from 'svelte'; 
-  import { ROUTE } from '../Route.html';
-  let route = getContext(ROUTE); 
+  import { ROUTER } from '../Router.html';
+  let { selectedRoute } = getContext(ROUTER); 
 </script>
 
 <h1>Named Params Route</h1>
 
-{#if route}
 <p>
   <strong>route:</strong>
 </p>
-<pre>{JSON.stringify(route.ctx,null,2)}</pre>
-{/if}
+<pre>{JSON.stringify($selectedRoute.ctx,null,2)}</pre>
 <p>Go <a href="/">home.</a></p>

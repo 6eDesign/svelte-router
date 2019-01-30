@@ -1,14 +1,8 @@
 {
   "version": 3,
   "file": "app.css",
-  "sources": [
-    "..\\src\\App.html",
-    "..\\src\\Components\\test\\HomeRoute.html"
-  ],
-  "sourcesContent": [
-    "<script>\n\timport Router from './Components/Router.html';\n\timport Route from './Components/Route.html';\n</script>\n\n<style>\n\tdiv { \n\t\tbackground: blue;\n\t}\n</style>\n\n<div>\n\t<Router>\n\t\t<!-- Route paths can be strings (exact matches or express-style named-params) or regex -->\n\t\t<!-- componentImport is a function which dynamically imports the necessary component -->\n\t\t<Route path='/' componentImport={() => import('./Components/test/HomeRoute.html')} />\n\t\t<Route path={/\\/regex-route\\.(\\d+)/} componentImport={() => import('./Components/test/RegexRoute.html')} />\n\t\t<Route path='/named/:id' componentImport={() => import('./Components/test/NamedParamsRoute.html')} />\n\t</Router>\n</div>",
-    "<style>\r\n  h1 { \r\n    color: red;\r\n  }\r\n</style>\r\n<h1>Homepage</h1>\r\n<p>\r\n  <strong>route:</strong>\r\n</p>\r\n<pre>{JSON.stringify(route,null,2)}</pre>\r\n<p>\r\n  Go to <a href=\"/regex-route.123\">regex route</a>\r\n</p>\r\n<p>\r\n  Go to <a href=\"/named/123\">named-params route</a>\r\n</p>"
-  ],
+  "sources": [],
+  "sourcesContent": [],
   "names": [],
-  "mappings": "AAMC,GAAG,eAAC,CAAC,AACJ,UAAU,CAAE,IAAI,AACjB,CAAC;ACPA,EAAE,eAAC,CAAC,AACF,KAAK,CAAE,GAAG,AACZ,CAAC"
+  "mappings": ""
 }

@@ -9,16 +9,33 @@
 	
 	let selectedRoute = writable(null);
 
+	export let middleware = [];
 	export let hashbang = false;
+	export let metadata = { }; 
+	export let ErrorComponent = null;
+
+	const applyMetadata = ({ metadata: route }) => (ctx,next) => { 
+		ctx.route = route; 
+		ctx.router = metadata;
+		next(); 
+	};
 
 	const routeMiddleware = route => (ctx) => { 
 		selectedRoute.set({ctx, route});
+		// todo: will need to call next if there are child routes
 	};
 	
 	setContext(ROUTER, { 
 		registerRoute(route) { 
-			page(route.path, routeMiddleware(route)); 
+			page(
+				route.path, 
+				applyMetadata(route),
+				...middleware, 
+				...route.middleware,
+				routeMiddleware(route)
+			); 
 		}, 
+		ErrorComponent,
 		selectedRoute
 	});
 
@@ -30,5 +47,4 @@
 
 </script>
 
-<!-- todo.. figure this bit out -->
 <slot></slot>
