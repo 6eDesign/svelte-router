@@ -3,6 +3,7 @@
 	import Route from './Components/Route.html';
 	import HomeRoute from './Components/test/HomeRoute.html';
 	import Error from './Components/test/Error.html';
+	import Loading from './Components/test/Loading.html';
 
 	const exampleRouterMiddleware = (ctx,next) => {
 		console.log(`This runs for every route in instance of Router\n${JSON.stringify(ctx,null,2)}`); 
@@ -21,44 +22,50 @@
 <div>
 	<Router 
 		hashbang={true}
-		ErrorComponent={Error}
+		error={Error}
+		loading={Loading}
 		middleware={[exampleRouterMiddleware]}
 		metadata={exampleRouterMetadata}
 	>
-		<!-- Route paths can be strings (exact matches or express-style named-params) or regex -->
-		<!-- Components can  be embedded via the component prop -->
+		<!-- 
+			Route paths can be strings (exact matches or express-style 
+			named-params) or regex 
+		
+			Components can  be embedded via the {component} prop 
+		-->
 		<Route 
 			path='/' 
 			component={HomeRoute}
 		/>
-		<!-- Components/DOM can also be embedded via the "component" slot -->
+		<!-- 
+			Components/DOM can also be embedded via the default route slot
+		-->
 		<Route
 			path='/home-alt'
 			middleware={[exampleRouteMiddleware]}
 			metadata={exampleRouteMetadata}
 		>
-			<div slot="component">
-				<HomeRoute />
-			</div>
+			<HomeRoute />
 		</Route>
 		<!-- 
 			asyncComponent is an optional prop which provides a function which 
-			dynamically imports the necessary component for a route 
+			dynamically imports the necessary component for a route - for use 
+			with codesplitting.  
 		-->
 		<Route 
 			path={/\/regex-route\.(\d+)/} 
 			asyncComponent={() => import('./Components/test/RegexRoute.html')} 
 		/>
+		<!-- 
+			you can override router-wide error and loading 
+			components by specifying 'loading' and 'error' slots 
+			within a route or by passing component references to 
+			the {error} and {loading} props of the route
+		-->
 		<Route 
 			path='/named/:id' 
 			asyncComponent={() => import('./Components/test/NamedParamsRoute.html')} 
 		>
-			<!-- 
-				with asynchronously loaded route components you can also specify 
-				loading and error slots on a per-route basis
-			 -->
-			 <div slot="loading">LOADING...</div>
-			 <div slot="error">ERROR!</div>
 		</Route>
 	</Router>
 </div>

@@ -2,11 +2,14 @@
 	import { getContext, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { ROUTER } from './Router.html';
+	import DefaultLoadingComponent from './Loading.html';
+	import DefaultErrorComponent from './Error.html';
 
 	const {
 		registerRoute, 
 		selectedRoute, 
-		ErrorComponent=null 
+		error: routerErrorComponent=null, 
+		loading: routerLoadingComponent=null
 	} = getContext(ROUTER);
 
 	// props
@@ -15,20 +18,33 @@
 	export let component = null;
 	export let middleware = [];
 	export let metadata = { }
+	export let error = null;
+	export let loading = null;
 
 	// template variables
 	let componentPromise; 
 	let target;
 	let routeError = null;
 
-	const route = { path, asyncComponent, middleware, metadata };
+	// reactive variables: 
+	let loadingComponent, errorComponent; 
+	$: loadingComponent = loading || routerLoadingComponent || DefaultLoadingComponent;
+	$: errorComponent = error || routerErrorComponent || DefaultErrorComponent;
+
+	const route = { 
+		path, 
+		asyncComponent, 
+		middleware, 
+		metadata 
+	};
 
 	registerRoute(route);
 
 	selectedRoute.subscribe(selected => {
 		if(!selected) return;
 		if(asyncComponent && selected && selected.route == route) {
-			componentPromise = asyncComponent().then(
+			componentPromise = asyncComponent();
+			componentPromise.then(
 				({default: Component}) => {
 					return new Component({
 						target
@@ -47,23 +63,15 @@
 {#if $selectedRoute && $selectedRoute.route == route}
 	{#if asyncComponent}
 		{#await componentPromise}
-			<slot name="loading">
-				<p>Loading... </p>
-			</slot>
+			<svelte:component this={loadingComponent} />
 		{:then}
-		{:catch}
-			<slot name="error">
-				{#if ErrorComponent}
-					<svelte:component this={ErrorComponent} />
-				{:else}
-					<p>Error!</p>
-				{/if}
-			</slot>
+		{:catch error}
+			<svelte:component this={errorComponent} error={error} />
 		{/await}
 		<div bind:this={target}></div>
 	{:elseif component}
 		<svelte:component this={component} />
 	{:else}
-		<slot name="component"></slot>
+		<slot></slot>
 	{/if}
 {/if}

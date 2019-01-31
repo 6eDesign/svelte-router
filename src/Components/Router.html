@@ -12,7 +12,8 @@
 	export let middleware = [];
 	export let hashbang = false;
 	export let metadata = { }; 
-	export let ErrorComponent = null;
+	export let error = null;
+	export let loading = null;
 
 	const applyMetadata = ({ metadata: route }) => (ctx,next) => { 
 		ctx.metadata = { 
@@ -37,7 +38,8 @@
 				routeMiddleware(route)
 			); 
 		}, 
-		ErrorComponent,
+		error,
+		loading,
 		selectedRoute
 	});
 
