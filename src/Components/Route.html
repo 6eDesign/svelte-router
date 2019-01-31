@@ -55,11 +55,6 @@
 
 </script>
 
-<!-- todo: 
-			change all slots to vars w/ svelte:component
-			or maintain option of using slot or component
-			everywhere? 
--->
 {#if $selectedRoute && $selectedRoute.route == route}
 	{#if asyncComponent}
 		{#await componentPromise}
