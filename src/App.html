@@ -17,12 +17,14 @@
 
 	const exampleRouterMetadata = { routerId: 123 };
 	const exampleRouteMetadata = { pageName: 'Home (Alt)' }; 
+
+	let base = location.pathname;
 </script>
 
 <div>
 	<Router 
 		hashbang={true}
-		base={location.pathname}
+		{base}
 		error={Error}
 		loading={Loading}
 		middleware={[exampleRouterMiddleware]}

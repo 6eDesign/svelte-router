@@ -46,8 +46,8 @@
 
 	onMount(() => {
 		setTimeout(() => {
-			page.base(base);
-			page({hashbang}); 
+			page.start({hashbang}); 
+			if(base != '/') page.base(base);
 		}, 0);
 	});
 
