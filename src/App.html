@@ -22,6 +22,7 @@
 <div>
 	<Router 
 		hashbang={true}
+		base={location.pathname}
 		error={Error}
 		loading={Loading}
 		middleware={[exampleRouterMiddleware]}

@@ -14,6 +14,7 @@
 	export let metadata = { }; 
 	export let error = null;
 	export let loading = null;
+	export let base = '/';
 
 	const applyMetadata = ({ metadata: route }) => (ctx,next) => { 
 		ctx.metadata = { 
@@ -45,6 +46,7 @@
 
 	onMount(() => {
 		setTimeout(() => {
+			page.base(base);
 			page({hashbang}); 
 		}, 0);
 	});
