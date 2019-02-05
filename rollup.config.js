@@ -12,7 +12,7 @@ const test = {
   output: {
     sourcemap: true,
     format: "es",
-    dir: 'public/module'
+    dir: 'docs/module'
   },
   experimentalCodeSplitting: true, 
   plugins: [
@@ -26,7 +26,7 @@ const test = {
       // we'll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
-        css.write("public/app.css");
+        css.write("docs/app.css");
       }
     }),
 
@@ -39,7 +39,7 @@ const test = {
     commonjs(),
     buble({ objectAssign: true }),
 
-    !production && browsersync({ server: "public" }),
+    !production && browsersync({ server: "docs" }),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
