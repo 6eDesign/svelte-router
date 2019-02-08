@@ -24,7 +24,6 @@
 <div>
 	<Router 
 		hashbang={true}
-		{base}
 		error={Error}
 		loading={Loading}
 		middleware={[exampleRouterMiddleware]}
@@ -37,14 +36,14 @@
 			Components can  be embedded via the {component} prop 
 		-->
 		<Route 
-			path='/' 
+			path='/svelte-router' 
 			component={HomeRoute}
 		/>
 		<!-- 
 			Components/DOM can also be embedded via the default route slot
 		-->
 		<Route
-			path='/home-alt'
+			path='/svelte-router/home-alt'
 			middleware={[exampleRouteMiddleware]}
 			metadata={exampleRouteMetadata}
 		>
@@ -56,17 +55,15 @@
 			with codesplitting.  
 		-->
 		<Route 
-			path={/\/regex-route\.(\d+)/} 
+			path={/\/svelte-router\/regex-route\.(\d+)/} 
 			asyncComponent={() => import('./Components/test/RegexRoute.html')} 
 		/>
 		<!-- 
 			you can override router-wide error and loading 
-			components by specifying 'loading' and 'error' slots 
-			within a route or by passing component references to 
-			the {error} and {loading} props of the route
+			components by specifying 'loading' and 'error' props
 		-->
 		<Route 
-			path='/named/:id' 
+			path='/svelte-router/named/:id' 
 			asyncComponent={() => import('./Components/test/NamedParamsRoute.html')} 
 		>
 		</Route>

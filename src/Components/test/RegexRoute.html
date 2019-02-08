@@ -1,13 +1,16 @@
 <script>
   import { getContext, onMount } from 'svelte'; 
+  import Page from './Page.html';
   import { ROUTER } from '../Router.html';
   let { selectedRoute } = getContext(ROUTER); 
 </script>
 
-<h1>Regex Route</h1>
+<Page>
+  <h1>Regex Route</h1>
 
-<p>
-  <strong>route:</strong>
-</p>
-<pre>{JSON.stringify($selectedRoute.ctx,null,2)}</pre>
-<p>Go <a href="/">home.</a></p>
+  <p>
+    <strong>route:</strong>
+  </p>
+  <pre>{JSON.stringify($selectedRoute.ctx,null,2)}</pre>
+  <p>Go <a href="/svelte-router/">home.</a></p>
+</Page>

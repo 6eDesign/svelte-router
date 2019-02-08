@@ -39,7 +39,15 @@ const test = {
     commonjs(),
     buble({ objectAssign: true }),
 
-    !production && browsersync({ server: "docs" }),
+    !production && browsersync({ 
+      server: { 
+        baseDir: "docs", 
+        routes: { 
+          "/svelte-router": "docs"
+        }
+      },
+      // proxy: 'localhost/svelte-router'
+    }),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
