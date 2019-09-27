@@ -4,8 +4,9 @@
 
 <script>
 	import { setContext, onMount, afterUpdate } from 'svelte';
-	import { writable, derive } from 'svelte/store';
-	import page from 'page.js';
+	import { writable } from 'svelte/store';
+	console.log('hi');
+	import page from 'page';
 	
 	let selectedRoute = writable(null);
 
@@ -30,6 +31,7 @@
 	
 	setContext(ROUTER, { 
 		registerRoute(route) { 
+			console.log('hi1123123', route);
 			page(
 				route.path, 
 				applyMetadata(route),
@@ -44,9 +46,7 @@
 	});
 
 	onMount(() => {
-		setTimeout(() => {
-			page({hashbang}); 
-		}, 0);
+		page();
 	});
 
 </script>

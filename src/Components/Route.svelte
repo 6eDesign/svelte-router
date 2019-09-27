@@ -1,9 +1,8 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
-	import { writable } from 'svelte/store';
-	import { ROUTER } from './Router.html';
-	import DefaultLoadingComponent from './Loading.html';
-	import DefaultErrorComponent from './Error.html';
+	import { ROUTER } from './Router.svelte';
+	import DefaultLoadingComponent from './Loading.svelte';
+	import DefaultErrorComponent from './Error.svelte';
 
 	const {
 		registerRoute, 
@@ -37,7 +36,7 @@
 		middleware, 
 		metadata 
 	};
-
+	console.log(JSON.stringify(route, null, 2));
 	registerRoute(route);
 
 	selectedRoute.subscribe(selected => {
@@ -64,7 +63,7 @@
 			<svelte:component this={errorComponent} error={error} />
 		{/await}
 		<div bind:this={target}></div>
-	{:elseif component}
+	{:else if component}
 		<svelte:component this={component} />
 	{:else}
 		<slot></slot>

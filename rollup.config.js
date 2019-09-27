@@ -18,8 +18,8 @@ const test = {
   plugins: [
     svelte({
       // opt in to v3 behaviour today
-      skipIntroByDefault: true,
-      nestedTransitions: true,
+      // skipIntroByDefault: true,
+      // nestedTransitions: true,
 
       // enable run-time checks when not in production
       dev: !production,
@@ -44,9 +44,9 @@ const test = {
         baseDir: "docs", 
         routes: { 
           "/svelte-router": "docs"
-        }
+        }, 
       },
-      // proxy: 'localhost/svelte-router'
+      startPath: '/svelte-router',
     }),
 
     // If we're building for production (npm run build
