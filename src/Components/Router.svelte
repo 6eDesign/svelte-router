@@ -5,7 +5,6 @@
 <script>
 	import { setContext, onMount, afterUpdate } from 'svelte';
 	import { writable } from 'svelte/store';
-	console.log('hi');
 	import page from 'page';
 	
 	let selectedRoute = writable(null);
@@ -16,7 +15,7 @@
 	export let error = null;
 	export let loading = null;
 
-	const applyMetadata = ({ metadata: route }) => (ctx,next) => { 
+	const customizeCtx = ({ metadata: route }) => (ctx,next) => { 
 		ctx.metadata = { 
 			route, 
 			router: metadata
@@ -31,10 +30,9 @@
 	
 	setContext(ROUTER, { 
 		registerRoute(route) { 
-			console.log('hi1123123', route);
 			page(
-				route.path, 
-				applyMetadata(route),
+				route.path, 	
+				customizeCtx(route),
 				...middleware, 
 				...route.middleware,
 				routeMiddleware(route)
@@ -46,7 +44,7 @@
 	});
 
 	onMount(() => {
-		page();
+		page({hashbang});
 	});
 
 </script>

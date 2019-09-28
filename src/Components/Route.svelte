@@ -36,7 +36,6 @@
 		middleware, 
 		metadata 
 	};
-	console.log(JSON.stringify(route, null, 2));
 	registerRoute(route);
 
 	selectedRoute.subscribe(selected => {
