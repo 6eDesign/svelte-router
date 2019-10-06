@@ -1,6 +1,6 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
-	import { ROUTER } from './Router.svelte';
+	// import { ROUTER } from './Router.svelte';
 	import DefaultLoadingComponent from './Loading.svelte';
 	import DefaultErrorComponent from './Error.svelte';
 
@@ -9,7 +9,7 @@
 		selectedRoute, 
 		error: routerErrorComponent=null, 
 		loading: routerLoadingComponent=null
-	} = getContext(ROUTER);
+	} = getContext('ROUTER');
 
 	// props
 	export let path; 
@@ -45,7 +45,8 @@
 			componentPromise.then(
 				({default: Component}) => {
 					return new Component({
-						target
+						target, 
+						props: { selectedRoute }
 					});
 			}); 
 		}
@@ -63,7 +64,7 @@
 		{/await}
 		<div bind:this={target}></div>
 	{:else if component}
-		<svelte:component this={component} />
+		<svelte:component this={component} {selectedRoute} />
 	{:else}
 		<slot></slot>
 	{/if}

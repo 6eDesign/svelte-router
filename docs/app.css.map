@@ -2,8 +2,8 @@
   "version": 3,
   "file": "app.css",
   "sources": [
-    "..\\src\\Components\\test\\Error.html",
-    "..\\src\\Components\\test\\Loading.html"
+    "..\\src\\Components\\test\\Error.svelte",
+    "..\\src\\Components\\test\\Loading.svelte"
   ],
   "sourcesContent": [
     "<script>\r\n  export let error = null;\r\n</script>\r\n\r\n<h1>Custom Error Page</h1>\r\n\r\n<pre>\r\n  {error}\r\n</pre>\r\n\r\n<style>\r\n  pre { \r\n    padding: 40px;\r\n    font-size: 14px;\r\n    background-color: rgba(255,0,0,0.2); \r\n  }\r\n</style>",

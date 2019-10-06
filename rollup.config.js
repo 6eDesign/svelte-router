@@ -14,7 +14,6 @@ const test = {
     format: "es",
     dir: 'docs/module'
   },
-  experimentalCodeSplitting: true, 
   plugins: [
     svelte({
       // opt in to v3 behaviour today

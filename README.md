@@ -18,15 +18,15 @@ With Svelte v3:
     <!-- componentImport is a function which dynamically imports the necessary component -->
     <Route 
       path='/' 
-      componentImport={() => import('./HomeRoute.html')} 
+      componentImport={() => import('./HomeRoute.svelte')} 
     />
     <Route 
       path={/\/regex-route\.(\d+)/} 
-      componentImport={() => import('./RegexRoute.html')} 
+      componentImport={() => import('./RegexRoute.svelte')} 
     />
     <Route 
       path='/named/:id'
-      componentImport={() => import('./NamedParamsRoute.html')} 
+      componentImport={() => import('./NamedParamsRoute.svelte')} 
     />
  </Router>
 </div>

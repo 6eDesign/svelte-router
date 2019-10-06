@@ -1,6 +1,6 @@
-<script context="module">
+<!-- <script context="module">
 	export const ROUTER = { }; 
-</script>
+</script> -->
 
 <script>
 	import { setContext, onMount, afterUpdate } from 'svelte';
@@ -28,7 +28,7 @@
 		// todo: will need to call next if there are child routes
 	};
 	
-	setContext(ROUTER, { 
+	setContext('ROUTER', { 
 		registerRoute(route) { 
 			page(
 				route.path, 	
@@ -44,7 +44,7 @@
 	});
 
 	onMount(() => {
-		page({hashbang});
+		page({});
 	});
 
 </script>
