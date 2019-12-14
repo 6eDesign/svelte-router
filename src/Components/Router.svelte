@@ -14,12 +14,14 @@
 	export let metadata = { }; 
 	export let error = null;
 	export let loading = null;
+	export let base = '/';
 
 	const customizeCtx = ({ metadata: route }) => (ctx,next) => { 
 		ctx.metadata = { 
 			route, 
 			router: metadata
 		};
+		ctx.navigate = page;
 		next(); 
 	};
 
@@ -44,6 +46,9 @@
 	});
 
 	onMount(() => {
+		if (base !== '/') {
+			page.base(base)
+		}
 		page({});
 	});
 

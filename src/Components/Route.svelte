@@ -1,6 +1,5 @@
 <script>
 	import { getContext, onDestroy } from 'svelte';
-	// import { ROUTER } from './Router.svelte';
 	import DefaultLoadingComponent from './Loading.svelte';
 	import DefaultErrorComponent from './Error.svelte';
 
@@ -24,6 +23,7 @@
 	let componentPromise; 
 	let target;
 	let routeError = null;
+	let routeIsActive = false;
 
 	// reactive variables: 
 	let loadingComponent, errorComponent; 
@@ -39,16 +39,25 @@
 	registerRoute(route);
 
 	selectedRoute.subscribe(selected => {
-		if(!selected) return;
+		if(!selected || selected.route !== route) {
+			routeIsActive = false;
+			return;
+		}
 		if(asyncComponent && selected && selected.route == route) {
 			componentPromise = asyncComponent();
-			componentPromise.then(
-				({default: Component}) => {
-					return new Component({
-						target, 
-						props: { selectedRoute }
-					});
-			}); 
+			if(routeIsActive) {
+				component.$set({ selectedRoute });
+			} else {
+				routeIsActive = true;
+				componentPromise.then(
+					({default: Component}) => {
+						component = new Component({
+							target, 
+							props: { selectedRoute }
+						});
+						return component;
+				}); 
+			}
 		}
 	});
 
@@ -62,7 +71,7 @@
 		{:catch error}
 			<svelte:component this={errorComponent} error={error} />
 		{/await}
-		<div bind:this={target}></div>
+		<div bind:this={target} class="route-container"></div>
 	{:else if component}
 		<svelte:component this={component} {selectedRoute} />
 	{:else}
