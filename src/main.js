@@ -5,5 +5,5 @@ import Route from './Components/Route.svelte';
 
 export { 
   Route,
-  Router, 
+  Router
 }; 

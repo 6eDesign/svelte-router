@@ -1,4 +1,4 @@
-pre.svelte-kaf4t9{padding:40px;font-size:14px;background-color:rgba(255,0,0,0.2)}
 .ring.svelte-1usn4hs{display:inline-block;width:64px;height:64px;position:absolute;top:50%;left:50%;transform:translate(-50%, -50%)}.ring.svelte-1usn4hs div.svelte-1usn4hs{box-sizing:border-box;display:block;position:absolute;width:51px;height:51px;margin:6px;border:6px solid #eee;border-radius:50%;animation:svelte-1usn4hs-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;border-color:#eee transparent transparent transparent}.ring.svelte-1usn4hs div.svelte-1usn4hs:nth-child(1){animation-delay:-0.45s}.ring.svelte-1usn4hs div.svelte-1usn4hs:nth-child(2){animation-delay:-0.3s}.ring.svelte-1usn4hs div.svelte-1usn4hs:nth-child(3){animation-delay:-0.15s}@keyframes svelte-1usn4hs-ring{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+pre.svelte-kaf4t9{padding:40px;font-size:14px;background-color:rgba(255,0,0,0.2)}
 
 /*# sourceMappingURL=app.css.map */

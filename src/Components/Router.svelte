@@ -42,7 +42,7 @@
 		}, 
 		error,
 		loading,
-		selectedRoute
+		selectedRoute,
 	});
 
 	onMount(() => {
