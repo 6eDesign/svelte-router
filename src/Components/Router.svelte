@@ -7,8 +7,7 @@
 	import { writable } from 'svelte/store';
 	import page from 'page';
 	
-	let selectedRoute = writable(null);
-
+	export let selectedRoute = writable(null);
 	export let middleware = [];
 	export let hashbang = false;
 	export let metadata = { }; 
