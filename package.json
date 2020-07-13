@@ -21,7 +21,7 @@
     "rollup-plugin-svelte": "^5.2.0",
     "rollup-plugin-terser": "^4.0.4",
     "sirv-cli": "^0.2.2",
-    "standard-version": "^4.4.0",
+    "standard-version": "^8.0.1",
     "svelte": "^3.20.1",
     "svelte-transitions": "^1.2.0",
     "timeUtils": "^1.1.4"
